@@ -25,9 +25,10 @@
 // }
 
 class VatService{
-    constructor(vatValue) {
-        this.vatValue = vatValue
+    constructor() {
+        this.vatValue = 0.23
     }
+
 
     getGrossPriceForDefaultVat(product){
         return this.getGrossPrice(product.getNetPrice(), this.vatValue);
@@ -47,7 +48,10 @@ class Product {
         this.netPrice = netPrice
     }
 
-    get getNetPrice(){
+    getNetPrice(){
         return this.netPrice
     }
 }
+
+module.exports = {VatService, Product}
+
