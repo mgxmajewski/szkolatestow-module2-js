@@ -25,8 +25,8 @@
 // }
 
 class VatService{
-    constructor() {
-        this.vatValue = 0.23
+    constructor(vatValue=0.23) {
+        this.vatValue = vatValue
     }
 
 
