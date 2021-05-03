@@ -10,8 +10,8 @@ describe('VatService with "interface"', () => {
         vatService = new VatService(vatProvider)
     });
 
-    let getProductWithPrice = (id, netPrice) => {
-        return new Product(id, netPrice)
+    let getProductWithPrice = (id, netPrice, productType) => {
+        return new Product(id, netPrice, productType)
     }
 
     test('test_get_gross_price_for_default_vat', () => {
