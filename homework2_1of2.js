@@ -36,7 +36,7 @@ class VatService{
 
     getGrossPrice(netPrice, vatValue){
         if(vatValue > 1){
-            throw new Error
+            throw new Error('valueError')
         }
         return netPrice * (1 + vatValue);
     }

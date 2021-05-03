@@ -23,6 +23,15 @@ describe('VatService', () => {
         let result = vatService.getGrossPrice(product.getNetPrice(), vatValue)
         expect(result).toEqual(10.80);
     });
+
+    test('test_get_gross_price_throws_error', () => {
+        let product = getProductWithPrice(1, 10.00)
+        const vatValue = 1.08
+        function result() {
+            vatService.getGrossPrice(product.getNetPrice(), vatValue)
+        }
+        expect(() => result()).toThrow('valueError');
+    });
 })
 
 
