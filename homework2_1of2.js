@@ -29,6 +29,13 @@ class VatService{
         this.vatValue = vatValue
     }
 
+    get getDefaultVatValue(){
+        return this.vatValue
+    }
+
+    set setDefaultVatValue(newVatValue){
+        this.vatValue = newVatValue
+    }
 
     getGrossPriceForDefaultVat(product){
         return this.getGrossPrice(product.getNetPrice(), this.vatValue);
