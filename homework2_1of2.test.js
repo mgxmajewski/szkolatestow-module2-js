@@ -1,4 +1,4 @@
-const {VatService, Product} = require('./homework2_2of2')
+const {VatService, Product} = require('./homework2_1of2')
 
 describe('VatService', () => {
     let vatService
