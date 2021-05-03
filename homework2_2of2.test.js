@@ -2,10 +2,10 @@ const {VatService, Product} = require('./homework2_2of2')
 const {VatProvider} = require('./VatProvider')
 
 describe('VatService with "interface"', () => {
+
     let vatService
     let vatProvider
     beforeEach(() => {
-        console.log('before each')
         vatProvider = new VatProvider()
         vatService = new VatService(vatProvider)
     });
@@ -14,35 +14,35 @@ describe('VatService with "interface"', () => {
         return new Product(id, netPrice, productType)
     }
 
-    test('test_get_gross_price_for_default_vat', () => {
-        let product = getProductWithPrice(1, 20.00)
-
+    test('should get gross price for default vat', () => {
+        let product = getProductWithPrice(1, 20.00, 'book')
+        const vatValue = jest.spyOn(VatProvider.prototype, 'getDefaultVat').mockReturnValue(0.23);
         let result = vatService.getGrossPriceForDefaultVat(product)
+        expect(vatValue).toHaveBeenCalled();
         expect(result).toEqual(24.60);
     });
 
-    test('test_get_gross_price', () => {
-        let product = getProductWithPrice(1, 10.00)
+    test('should calculateGrossPrice', () => {
+        let product = getProductWithPrice(1, 10.00, 'burger')
         const vatValue = 0.08
-        let result = vatService.getGrossPrice(product.getNetPrice(), vatValue)
-        expect(result).toEqual(10.80);
+        let result = vatService.calculateGrossPrice(product.getNetPrice(), vatValue)
+        expect(result).toBeCloseTo(10.80,5);
     });
 
-    test('spy vat provider', () => {
-        let product = getProductWithPrice(1, 10.00)
-        const vatValue = jest.spyOn(VatProvider.prototype, 'getDefaultVat').mockReturnValue(0.06);
-        const vatProviderVat = vatProvider.getDefaultVat()
-        let result = vatService.getGrossPrice(product.getNetPrice(), vatProviderVat);
+    test('should get gross price with vat for type of product', () => {
+        let product = getProductWithPrice(1, 10.00, 'beer')
+        const vatValue = jest.spyOn(VatProvider.prototype, 'getVatForType').mockReturnValue(0.12);
+        let result = vatService.getGrossPriceForType(product.getNetPrice(), 'beer');
         expect(vatValue).toHaveBeenCalled();
-        expect(result).toBeCloseTo(10.6,5);
+        expect(result).toBeCloseTo(11.2,5);
 
     });
 
-    test('test_get_gross_price_throws_error', () => {
-        let product = getProductWithPrice(1, 10.00)
-        const vatValue = 1.08
+    test('should throw error on vat exceeding 1', () => {
+        let product = getProductWithPrice(1, 10.00, 'pizza')
+        const vatValue = jest.spyOn(VatProvider.prototype, 'getVatForType').mockReturnValue(1.08)
         function result() {
-            vatService.getGrossPrice(product.getNetPrice(), vatValue)
+            vatService.getGrossPriceForType(product.getNetPrice(), vatValue)
         }
         expect(() => result()).toThrow('valueError - exceed one');
     });
